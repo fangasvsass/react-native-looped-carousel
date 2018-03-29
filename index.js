@@ -30,14 +30,12 @@ export default class Carousel extends Component {
     style: viewPropTypes.style,
     pageStyle: viewPropTypes.style,
     contentContainerStyle: viewPropTypes.style,
-    pageInfo: PropTypes.bool,
-    pageInfoWidth: PropTypes.number,
-    pageInfoBackgroundColor: PropTypes.string,
-    pageInfoBackgroundColorOnFocus: PropTypes.string,
-    pageInfoTextStyle: Text.propTypes.style,
-    pageInfoBottomContainerStyle: viewPropTypes.style,
-    pageInfoTextSeparator: PropTypes.string,
-    opacity: PropTypes.number,
+    showIndicator: PropTypes.bool,
+    indicatorCircleWidth: PropTypes.number,
+    indicatorDefaultColor: PropTypes.string,
+    indicatorActiveColor: PropTypes.string,
+    indicatorBottomContainerStyle: viewPropTypes.style,
+    indicatorOpacity: PropTypes.number,
     bullets: PropTypes.bool,
     bulletsContainerStyle: Text.propTypes.style,
     bulletStyle: Text.propTypes.style,
@@ -57,20 +55,19 @@ export default class Carousel extends Component {
   static defaultProps = {
     delay: PAGE_CHANGE_DELAY,
     autoplay: true,
-    pageInfo: false,
+    showIndicator: false,
     bullets: false,
     arrows: false,
-    pageInfoBackgroundColor: 'rgba(0, 0, 0, 0.25)',
-    pageInfoBackgroundColorOnFocus: '#FFF',
-    pageInfoTextSeparator: ' / ',
-    pageInfoWidth: 5,
-    opacity: 1,
+    indicatorDefaultColor: 'rgba(0, 0, 0, 0.25)',
+    indicatorActiveColor: '#FFF',
+    indicatorCircleWidth: 5,
+    indicatorOpacity: 1,
     currentPage: 0,
     style: undefined,
     pageStyle: undefined,
     contentContainerStyle: undefined,
-    pageInfoTextStyle: undefined,
-    pageInfoBottomContainerStyle: undefined,
+    indicatorTextStyle: undefined,
+    indicatorBottomContainerStyle: undefined,
     bulletsContainerStyle: undefined,
     chosenBulletStyle: undefined,
     bulletStyle: undefined,
@@ -305,14 +302,14 @@ export default class Carousel extends Component {
     return this._normalizePageNumber(page)
   }
 
-  _renderPageInfo = pageLength => (
+  _renderShowIndicator = pageLength => (
     <View
       style={[
-        styles.pageInfoBottomContainer,
-        this.props.pageInfoBottomContainerStyle
+        styles.indicatorBottomContainer,
+        this.props.indicatorBottomContainerStyle
       ]}
       pointerEvents="none">
-      <View style={styles.pageInfoContainer}>
+      <View style={styles.indicatorContainer}>
         <View style={styles.bulletsContainer}>
           {this.props.children.map((_, index) => {
             return (
@@ -320,17 +317,19 @@ export default class Carousel extends Component {
                 style={{
                   width:
                     index == this.state.currentPage
-                      ? this.props.pageInfoWidth * 2
-                      : this.props.pageInfoWidth,
-                  height: this.props.pageInfoWidth,
-                  borderRadius: this.props.pageInfoWidth,
+                      ? this.props.indicatorCircleWidth * 2
+                      : this.props.indicatorCircleWidth,
+                  height: this.props.indicatorCircleWidth,
+                  borderRadius: this.props.indicatorCircleWidth,
                   backgroundColor:
                     index == this.state.currentPage
-                      ? this.props.pageInfoBackgroundColorOnFocus
-                      : this.props.pageInfoBackgroundColor,
+                      ? this.props.indicatorActiveColor
+                      : this.props.indicatorDefaultColor,
                   margin: 5,
                   opacity:
-                    index !== this.state.currentPage ? this.props.opacity : 1
+                    index !== this.state.currentPage
+                      ? this.props.indicatorOpacity
+                      : 1
                 }}
               />
             )
@@ -403,7 +402,7 @@ export default class Carousel extends Component {
 
     const containerProps = {
       onLayout: this._onLayout,
-      style: [this.props.style]
+      style: [this.props.style || styles.container]
     }
 
     const { size } = this.state
@@ -441,37 +440,33 @@ export default class Carousel extends Component {
         </ScrollView>
         {this.props.arrows && this._renderArrows(this.state.childrenLength)}
         {this.props.bullets && this._renderBullets(this.state.childrenLength)}
-        {this.props.pageInfo && this._renderPageInfo(this.state.childrenLength)}
+        {this.props.showIndicator &&
+          this._renderShowIndicator(this.state.childrenLength)}
       </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: '100%',
+    height: 200
+  },
   horizontalScroll: {
     position: 'absolute'
   },
-  pageInfoBottomContainer: {
+  indicatorBottomContainer: {
     position: 'absolute',
     bottom: 10,
     left: 0,
     right: 0,
     backgroundColor: 'transparent'
   },
-  pageInfoContainer: {
+  indicatorContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'transparent'
-  },
-  pageInfoPill: {
-    width: 80,
-    height: 20,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  pageInfoText: {
-    textAlign: 'center'
   },
   bullets: {
     position: 'absolute',
