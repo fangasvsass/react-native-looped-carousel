@@ -314,6 +314,7 @@ export default class Carousel extends Component {
           {this.props.children.map((_, index) => {
             return (
               <View
+                key={index}
                 style={{
                   width:
                     index == this.state.currentPage
