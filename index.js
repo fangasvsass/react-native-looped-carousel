@@ -318,7 +318,7 @@ export default class Carousel extends Component {
                 style={{
                   width:
                     index == this.state.currentPage
-                      ? this.props.indicatorCircleWidth * 2
+                      ? this.props.indicatorCircleWidth * 3
                       : this.props.indicatorCircleWidth,
                   height: this.props.indicatorCircleWidth,
                   borderRadius: this.props.indicatorCircleWidth,
@@ -326,7 +326,7 @@ export default class Carousel extends Component {
                     index == this.state.currentPage
                       ? this.props.indicatorActiveColor
                       : this.props.indicatorDefaultColor,
-                  margin: 5,
+                  margin: 6,
                   opacity:
                     index !== this.state.currentPage
                       ? this.props.indicatorOpacity
