@@ -197,7 +197,7 @@ export default class Carousel extends Component {
   }
 
   _clearTimer = () => {
-    clearTimeout(this.timer)
+    this.timer&&clearTimeout(this.timer)
   }
 
   _setUpTimer = () => {
