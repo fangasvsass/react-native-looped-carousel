@@ -156,7 +156,8 @@ export default class Carousel extends Component {
       this.pages = pages.map((page, i) => (
         <TouchableWithoutFeedback
           style={[{ ...size }, this.props.pageStyle]}
-          key={`page${i}`}>
+          key={`page${i}`}
+        >
           {page}
         </TouchableWithoutFeedback>
       ))
@@ -197,7 +198,7 @@ export default class Carousel extends Component {
   }
 
   _clearTimer = () => {
-    this.timer&&clearTimeout(this.timer)
+    this.timer && clearTimeout(this.timer)
   }
 
   _setUpTimer = () => {
@@ -244,7 +245,10 @@ export default class Carousel extends Component {
   animateToPage = page => {
     let currentPage = page
     this._clearTimer()
-    const { childrenLength, size: { width } } = this.state
+    const {
+      childrenLength,
+      size: { width }
+    } = this.state
     if (currentPage >= childrenLength) {
       currentPage = this.props.isLooped ? 0 : childrenLength - 1
     }
@@ -274,7 +278,10 @@ export default class Carousel extends Component {
   }
 
   _placeCritical = page => {
-    const { childrenLength, size: { width } } = this.state
+    const {
+      childrenLength,
+      size: { width }
+    } = this.state
     if (childrenLength === 1) {
       this._scrollTo({ offset: 0, animated: false })
     } else if (this.props.isLooped && page === 0) {
@@ -298,7 +305,7 @@ export default class Carousel extends Component {
 
   _calculateCurrentPage = offset => {
     const { width } = this.state.size
-    const page = Math.floor(offset / width)
+    const page = Math.floor(offset + 1 / width)
     return this._normalizePageNumber(page)
   }
 
@@ -308,7 +315,8 @@ export default class Carousel extends Component {
         styles.indicatorBottomContainer,
         this.props.indicatorBottomContainerStyle
       ]}
-      pointerEvents="none">
+      pointerEvents="none"
+    >
       <View style={styles.indicatorContainer}>
         <View style={styles.bulletsContainer}>
           {this.props.children.map((_, index) => {
@@ -346,7 +354,8 @@ export default class Carousel extends Component {
       bullets.push(
         <TouchableWithoutFeedback
           onPress={() => this.animateToPage(i)}
-          key={`bullet${i}`}>
+          key={`bullet${i}`}
+        >
           <View
             style={
               i === this.state.currentPage
@@ -361,7 +370,8 @@ export default class Carousel extends Component {
       <View style={styles.bullets} pointerEvents="box-none">
         <View
           style={[styles.bulletsContainer, this.props.bulletsContainerStyle]}
-          pointerEvents="box-none">
+          pointerEvents="box-none"
+        >
           {bullets}
         </View>
       </View>
@@ -378,17 +388,20 @@ export default class Carousel extends Component {
       <View style={styles.arrows} pointerEvents="box-none">
         <View
           style={[styles.arrowsContainer, this.props.arrowsContainerStyle]}
-          pointerEvents="box-none">
+          pointerEvents="box-none"
+        >
           <TouchableOpacity
             onPress={this._animatePreviousPage}
-            style={this.props.arrowStyle}>
+            style={this.props.arrowStyle}
+          >
             <Text style={this.props.leftArrowStyle}>
               {this.props.leftArrowText ? this.props.leftArrowText : 'Left'}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={this._animateNextPage}
-            style={this.props.arrowStyle}>
+            style={this.props.arrowStyle}
+          >
             <Text style={this.props.rightArrowStyle}>
               {this.props.rightArrowText ? this.props.rightArrowText : 'Right'}
             </Text>
@@ -436,7 +449,8 @@ export default class Carousel extends Component {
                   (childrenLength > 1 && this.props.isLooped ? 2 : 0)),
               height: size.height
             }
-          ]}>
+          ]}
+        >
           {contents}
         </ScrollView>
         {this.props.arrows && this._renderArrows(this.state.childrenLength)}
