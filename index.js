@@ -305,7 +305,7 @@ export default class Carousel extends Component {
 
   _calculateCurrentPage = offset => {
     const { width } = this.state.size
-    const page = Math.floor(offset + 1 / width)
+    const page = Math.floor((offset + 1) / width)
     return this._normalizePageNumber(page)
   }
 
