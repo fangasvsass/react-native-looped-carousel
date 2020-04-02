@@ -116,7 +116,7 @@ export default class Carousel extends Component {
   startAnimation = () => {
     this.progress.setValue(0)
     Animated.timing(this.progress, {
-      toValue: 1,
+      toValue: this.props.indicatorCircleWidth * 8,
       duration: 3000,
       useNativeDriver: true,
       isInteraction: false
@@ -328,11 +328,6 @@ export default class Carousel extends Component {
   _renderShowIndicator = pageLength => {
     const { progressAnimation, indicatorCircleWidth } = this.props
     const width = indicatorCircleWidth * 8
-    const translateX = this.progress.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0, width],
-      extrapolate: 'clamp'
-    })
     return (
       <View
         style={[
@@ -374,7 +369,7 @@ export default class Carousel extends Component {
                         height: this.props.indicatorCircleWidth,
                         backgroundColor: this.props.indicatorActiveColor,
                         width: width,
-                        transform: [{ translateX: translateX }]
+                        transform: [{ translateX: this.progress }]
                       }}
                     />
                   ) : null}
